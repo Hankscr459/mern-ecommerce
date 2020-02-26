@@ -19,6 +19,12 @@ const productSchema = new mongoose.Schema(
             ref: 'Category',
             required: true
         },
+        price: {
+            type: Number,
+            trim: true,
+            required: true,
+            maxlength: 32
+        },
         quantity: {
             type: Number
         },
@@ -37,6 +43,5 @@ const productSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-
 
 module.exports = mongoose.model('Product', productSchema);
