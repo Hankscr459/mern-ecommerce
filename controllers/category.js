@@ -1,4 +1,5 @@
 const Category = require('../models/category');
+const Product = require('../models/product');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.categoryById = (req, res, next, id) => {
@@ -40,6 +41,30 @@ exports.update = (req, res) => {
             })
         }
         res.json(data)
+    })
+}
+
+exports.readProduct = (req, res) => {
+    const _id = req.params.categoryId
+
+    Category.findOne({ _id }).exec((err, cat) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        // res.json(cat)
+        Product.find({category: _id})
+        .populate('categories', '_id name')
+        .select('_id name quantity description category sold price createdAt updatedAt')
+        .exec((err, data) => {
+            if(err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({category: cat, products: data})
+        })
     })
 }
 
