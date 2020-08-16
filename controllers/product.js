@@ -224,15 +224,15 @@ exports.listCategories = (req, res) => {
 // router.post("/products/by/search", listBySearch);
  
 exports.listBySearch = (req, res) => {
-    let order = req.body.order ? req.body.order : "desc";
-    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
     let skip = parseInt(req.body.skip);
     let findArgs = {};
- 
-    // console.log(order, sortBy, limit, skip, req.body.filters);
-    // console.log("findArgs", findArgs);
- 
+
+    
+    const sort = req.query.sortBy ? req.query.sortBy : "quantityOrderByasc";
+    const parts = sort.split('OrderBy')
+
     for (let key in req.body.filters) {
         if (req.body.filters[key].length > 0) {
             if (key === "price") {
@@ -247,11 +247,11 @@ exports.listBySearch = (req, res) => {
             }
         }
     }
- 
+    // console.log(findArgs)
     Product.find(findArgs)
         .select("-photo")
         .populate("category")
-        .sort([[sortBy, order]])
+        .sort([[parts[0], parts[1]]])
         .skip(skip)
         .limit(limit)
         .exec((err, data) => {
