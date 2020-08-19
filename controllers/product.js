@@ -247,7 +247,12 @@ exports.listBySearch = (req, res) => {
             }
         }
     }
-    // console.log(findArgs)
+    if (typeof skip !== 'number') {
+        skip === 0
+    }
+    console.log(findArgs)
+    console.log( 'skip: ',skip)
+    console.log( 'limit: ',limit)
     Product.find(findArgs)
         .select("-photo")
         .populate("category")
