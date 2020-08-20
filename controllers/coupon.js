@@ -55,7 +55,7 @@ exports.list = (req, res) => {
 
 exports.active = (req, res) => {
     let code = req.query.code 
-    
+    console.log(code)
     Coupon.findOne({ code })
         .exec((err, coupon) => {
             if (err || ! coupon) {
@@ -63,6 +63,34 @@ exports.active = (req, res) => {
                     error: 'Coupon is invaild'
                 })
             }
+            if (coupon.expireDate <= Date.now()) {
+                return res.status(400).json({
+                    error: 'Coupon is Outdate'
+                })
+            }
+            if (coupon.isActive === false) {
+                return res.status(400).json({
+                    error: 'Coupon is not Active yet.'
+                })
+            }
+
             res.json(coupon)
         })
+}
+
+exports.update = (req, res) => {
+    Coupon.findOneAndUpdate(
+        { _id: req.coupon._id },
+        { $set: req.body },
+        { new: true },
+        (err, coupon) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'You are not authorized to perform this action'
+                })
+            }
+
+            res.json(coupon)
+        }
+    )
 }

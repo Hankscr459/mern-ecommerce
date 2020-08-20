@@ -1,7 +1,14 @@
 const express = require('express')
 const router = express.Router()
 
-const { createCoupon, couponById, read, list, active } = require('../controllers/coupon')
+const { 
+    createCoupon, 
+    couponById, 
+    read, 
+    list, 
+    active,
+    update
+} = require('../controllers/coupon')
 const { userById } = require('../controllers/user')
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth')
 
@@ -17,18 +24,22 @@ router.post(
     createCoupon
 );
 
+router.put(
+    '/coupon/:couponId/:userId',
+    requireSignin,
+    isAuth,
+    isAdmin,
+    update
+);
+
 router.get(
     '/coupon/:couponId',
     read
-    // requireSignin,
-    // isAuth
 );
 
 router.get(
     '/coupons',
     list
-    // requireSignin,
-    // isAuth
 );
 
 router.post(
