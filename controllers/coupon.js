@@ -79,6 +79,7 @@ exports.active = (req, res) => {
 }
 
 exports.update = (req, res) => {
+    console.log(req.coupon._id)
     Coupon.findOneAndUpdate(
         { _id: req.coupon._id },
         { $set: req.body },
@@ -89,8 +90,25 @@ exports.update = (req, res) => {
                     error: 'You are not authorized to perform this action'
                 })
             }
+            console.log(coupon)
+            console.log('req.body', req.body)
 
             res.json(coupon)
         }
     )
+}
+
+exports.remove = (req, res) => {
+    let coupon = req.coupon
+    coupon.remove((err, deleteCoupon) => {
+        if(err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json({
+            // deleteCoupon,
+            message: 'Product deleted successfully'
+        })
+    })
 }

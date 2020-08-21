@@ -7,7 +7,8 @@ const {
     read, 
     list, 
     active,
-    update
+    update,
+    remove
 } = require('../controllers/coupon')
 const { userById } = require('../controllers/user')
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth')
@@ -26,6 +27,7 @@ router.post(
 
 router.put(
     '/coupon/:couponId/:userId',
+    couponCodeValidator, 
     requireSignin,
     isAuth,
     isAdmin,
@@ -46,6 +48,14 @@ router.post(
     '/coupon/active',
     active
 );
+
+router.delete(
+    '/coupon/:couponId/:userId',
+    requireSignin,
+    isAuth,
+    isAdmin,
+    remove
+)
 
 router.param('userId', userById)
 router.param('couponId', couponById)
