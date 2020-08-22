@@ -56,6 +56,7 @@ exports.readProduct = (req, res) => {
         // res.json(cat)
         Product.find({category: _id})
         .populate('category', '_id name')
+        .populate('reviews')
         .select('_id name quantity description category sold price createdAt updatedAt')
         .exec((err, data) => {
             if(err) {

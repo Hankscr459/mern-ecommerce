@@ -7,6 +7,7 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
     .populate('category')
+    .populate('reviews')
     .exec((err, product) => {
         
         if(err || !product) {
@@ -166,6 +167,7 @@ exports.list = (req, res) => {
 
     Product.find()
         .populate('category')
+        .populate("reviews")
         .sort([[sortBy, order]])
         .limit(limit)
         .exec((err, products) => {
@@ -191,6 +193,7 @@ exports.listRelated = (req, res) => {
     .select('-photo')
     .limit(limit)
     .populate('category', '_id name')
+    .populate("reviews")
     .exec((err, products) => {
         if(err) {
             return res.status(400).json({
@@ -256,6 +259,7 @@ exports.listBySearch = (req, res) => {
     Product.find(findArgs)
         .select("-photo")
         .populate("category")
+        .populate("reviews")
         .sort([[parts[0], parts[1]]])
         .skip(skip)
         .limit(limit)

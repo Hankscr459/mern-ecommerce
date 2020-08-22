@@ -39,9 +39,82 @@ const productSchema = new mongoose.Schema(
         shipping: {
             required: false,
             type: Boolean
-        }
+        },
+        reviews: [{ type: ObjectId, ref: "Review" }]
     },
     { timestamps: true }
 );
+
+mongoose.set('toJSON', { virtuals: true })
+
+productSchema
+    .virtual('averageRating')
+    .get(function() {
+        if (this.reviews.length > 0) {
+        let sum = this.reviews.reduce((total, review) => {
+            return total + review.rating;
+        }, 0);
+        return sum / this.reviews.length;
+        }
+    
+        return 0;
+    });
+
+productSchema
+    .virtual('fiveStar')
+    .get(function() {
+        if (this.reviews.length > 0) {
+            const ratings = this.reviews.map(r => r.rating)
+            const filtrerStar = ratings.filter(r => r === 5)
+        return filtrerStar.length;
+        }
+
+        return 0;
+    });
+
+productSchema
+    .virtual('fourStar')
+    .get(function() {
+        if (this.reviews.length > 0) {
+            const ratings = this.reviews.map(r => r.rating)
+            const filtrerStar = ratings.filter(r => r === 4)
+        return filtrerStar.length;
+        }
+
+        return 0;
+    });
+productSchema
+    .virtual('threeStar')
+    .get(function() {
+        if (this.reviews.length > 0) {
+            const ratings = this.reviews.map(r => r.rating)
+            const filtrerStar = ratings.filter(r => r === 3)
+        return filtrerStar.length;
+        }
+
+        return 0;
+    });
+productSchema
+    .virtual('twoStar')
+    .get(function() {
+        if (this.reviews.length > 0) {
+            const ratings = this.reviews.map(r => r.rating)
+            const filtrerStar = ratings.filter(r => r === 2)
+        return filtrerStar.length;
+        }
+
+        return 0;
+    });
+productSchema
+    .virtual('oneStar')
+    .get(function() {
+        if (this.reviews.length > 0) {
+            const ratings = this.reviews.map(r => r.rating)
+            const filtrerStar = ratings.filter(r => r === 1)
+        return filtrerStar.length;
+        }
+
+        return 0;
+    });
 
 module.exports = mongoose.model('Product', productSchema);
