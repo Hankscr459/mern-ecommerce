@@ -8,6 +8,7 @@ exports.create = async (req, res) => {
       review.body = req.body.body;
       review.rating = req.body.rating;
       review.user = req.params.userId;
+      review.postBy = req.body.postBy;
       review.productID = req.params.productId;
 
       await Product.findOneAndUpdate(

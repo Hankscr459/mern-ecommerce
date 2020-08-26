@@ -112,3 +112,20 @@ exports.remove = (req, res) => {
         })
     })
 }
+
+exports.selectRemove = (req, res) => {
+    const coupons = req.params.allId.split(',') 
+    console.log('node: ',coupons)
+    Coupon.deleteMany({_id: {$in: coupons}}).exec((err, data) => {
+
+        if(err) {
+            return res.json({
+                error: errorHandler(err)
+            })
+        }
+        
+        res.json({
+            message: 'Coupon deleted successfully.'
+        })
+    })
+}

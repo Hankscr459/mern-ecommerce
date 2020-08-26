@@ -7,6 +7,7 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
     .populate('category')
+    .populate('user')
     .populate('reviews')
     .exec((err, product) => {
         
@@ -96,7 +97,7 @@ exports.remove = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+exports.update = (req, res, id) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions= true
     form.parse(req, (err, fields, files) => {

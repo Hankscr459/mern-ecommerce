@@ -8,7 +8,8 @@ const {
     list, 
     active,
     update,
-    remove
+    remove,
+    selectRemove
 } = require('../controllers/coupon')
 const { userById } = require('../controllers/user')
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth')
@@ -55,6 +56,14 @@ router.delete(
     isAuth,
     isAdmin,
     remove
+)
+
+router.delete(
+    '/coupons/:userId/:allId',
+    requireSignin,
+    isAuth,
+    isAdmin,
+    selectRemove
 )
 
 router.param('userId', userById)
