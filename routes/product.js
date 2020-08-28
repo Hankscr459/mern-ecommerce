@@ -12,7 +12,8 @@ const {
     listCategories,
     listBySearch,
     listSearch,
-    photo
+    photo,
+    search
 } = require('../controllers/product');
 const {
     requireSignin,
@@ -45,6 +46,7 @@ router.put(
 )
 router.get('/products', list)
 router.get('/products/search', listSearch)
+router.get('/products/find', search)
 router.get('/products/related/:productId', listRelated)
 router.get('/products/categories', listCategories)
 router.post('/products/by/search', listBySearch)

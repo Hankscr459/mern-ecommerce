@@ -327,3 +327,23 @@ exports.decreaseQuantity = (req, res, next) => {
         next()
     })
 }
+
+exports.search = (req , res) => {
+    const { search } = req.query
+    console.log(search)
+        
+        Product.find({
+            $or: [{name: {$regex: search, $options: 'i'}}, {description: {$regex: search, $options: 'i'}}]
+        }, (err, products) => {
+            if(err) {
+                return res.status(400).json({
+                    // error: errorHandler(err)
+                    error: 'Search not found'
+                })
+            }
+            res.json(products)
+        })
+        .select('-photo')
+        .populate('category', '_id name')
+        .populate("reviews")
+}
