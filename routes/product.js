@@ -13,8 +13,10 @@ const {
     listBySearch,
     listSearch,
     photo,
-    search
+    search,
+    postTempImg
 } = require('../controllers/product');
+const { postImg } = require('../controllers/cloudinary')
 const {
     requireSignin,
     isAuth,
@@ -44,6 +46,10 @@ router.put(
     isAdmin,
     update
 )
+
+router.post('/products/TempImg', postTempImg)
+router.post('/products/postImg', postImg)
+
 router.get('/products', list)
 router.get('/products/search', listSearch)
 router.get('/products/find', search)

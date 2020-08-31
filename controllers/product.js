@@ -2,7 +2,8 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
 const Product = require('../models/product');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const { errorHandler } = require('../helpers/dbErrorHandler')
+const multer = require('multer')
 
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
@@ -26,6 +27,35 @@ exports.read = (req, res) => {
     return res.json(req.product)
 }
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`)
+    },
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname)
+        if (ext !== '.jpg' || ext !== '.png') {
+            return cb(res.status(400).end('only jpg, png are allowed'), false);
+        }
+        cb(null, true)
+    }
+})
+
+var upload = multer({ storage: storage }).single("file")
+
+exports.postTempImg = (req, res) => {
+
+    upload(req, res, err => {
+        if (err) {
+            return res.json({ success: false, err })
+        }
+        return res.json({ success: true, image: res.req.file.path, fileName: res.req.file.filename })
+    })
+
+}
+
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions= true
@@ -43,7 +73,8 @@ exports.create = (req, res) => {
             price,
             category,
             quantity,
-            shipping
+            shipping,
+            images
         } = fields;
 
         if (

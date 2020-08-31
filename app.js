@@ -35,6 +35,7 @@ app.use(expressValidator());
 app.use(cors());
 
 // routes middlemare
+app.use("/uploads", express.static("uploads"));
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);
