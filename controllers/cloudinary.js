@@ -2,6 +2,7 @@ require('dotenv').config()
 const fs = require('fs')
 const cloudinary = require('cloudinary').v2
 const multer = require('multer')
+const Formidable = require('formidable')
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME, 
@@ -28,24 +29,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single("file")
 
-// https://medium.com/@johnryancottam/image-uploading-with-node-cloudinary-6f7796c8277a
 
 exports.postImg = (req, res, next) => {
-    // const upload = multer({ storage }).single('name-of-input-key')
+  
     upload(req, res, (err) => {
       if (err) {
         return res.json({ success: false, err })
       }
       console.log('file uploaded to server')
       console.log(req.file)
-  
-    //   // SEND FILE TO CLOUDINARY
-    //   const cloudinary = require('cloudinary').v2
-    //   cloudinary.config({
-    //     cloud_name: '###!!!###',
-    //     api_key: '###!!!###',
-    //     api_secret: '###!!!###'
-    //   })
       
       const path = req.file.path
       const uniqueFilename = new Date().toISOString()
@@ -65,3 +57,23 @@ exports.postImg = (req, res, next) => {
       )
     })
   }
+
+exports.ImgUpload = (req, res, next) => {
+    const form = new Formidable()
+    form.parse(req, (err, fields, files) =>{
+      console.log(req.file)
+      // const path = req.file.path
+      const uniqueFilename = new Date().toISOString()
+  
+      cloudinary.uploader.upload(
+        files.file.path,
+        { public_id: `merneco/${uniqueFilename}`, tags: `merneco` }, // directory and tags are optional
+        (err, image) => {
+          if (err) return res.send(err)
+          console.log('file uploaded to Cloudinary')
+          res.json(image)
+        }
+      )
+    })
+      
+}
