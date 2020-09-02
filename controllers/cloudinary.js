@@ -1,11 +1,12 @@
+require('dotenv').config()
 const fs = require('fs')
 const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 
 cloudinary.config({ 
-    cloud_name: 'andrewhank', 
-    api_key: '862982285867929', 
-    api_secret: 'kkuKQ0suNs1N3C626JTxWf_5Tz4' 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET 
 })
 
 const storage = multer.diskStorage({
