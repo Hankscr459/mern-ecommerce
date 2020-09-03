@@ -50,3 +50,23 @@ exports.couponCodeValidator = (req, res, next) => {
     }
     next();
 }
+
+exports.reviewValidator = (req, res, next) => {
+    req.check('headline', 'Headline is required').notEmpty()
+    req.check('headline','Headline must be between 3 to 32 charactors')
+        .isLength({
+            min: 4,
+            max: 50
+        });
+    req.check('body', 'Content is required').notEmpty()
+    req.check('body','Content maxlength  999 charactors')
+        .isLength({
+            max: 999
+        });
+    const errors = req.validationErrors();
+    if (errors) {
+        const firstError = errors.map(error => error.msg)[0];
+        return res.status(400).json({ error: firstError })
+    }
+    next();
+}

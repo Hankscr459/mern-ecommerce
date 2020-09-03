@@ -8,6 +8,7 @@ const {
     isAuth, 
     isAdmin 
 } = require('../controllers/auth')
+const { reviewValidator } = require('../validator')
 
 const { create, read } = require('../controllers/review')
 
@@ -15,6 +16,7 @@ router.post(
     '/review/:productId/:userId',
     requireSignin,
     isAuth,
+    reviewValidator,
     create
 )
 

@@ -265,7 +265,7 @@ exports.listBySearch = (req, res) => {
     let findArgs = {};
 
     
-    const sort = req.query.sortBy ? req.query.sortBy : "quantityOrderByasc";
+    const sort = req.query.sortBy ? req.query.sortBy : "priceOrderByasc";
     const parts = sort.split('OrderBy')
 
     for (let key in req.body.filters) {
