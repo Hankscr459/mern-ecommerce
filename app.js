@@ -15,6 +15,7 @@ const braintreeRoutes = require('./routes/braintree')
 const orderRoutes = require('./routes/order')
 const couponRoutes = require('./routes/coupon')
 const reviewRoutes = require('./routes/review')
+const carouselRoutes = require('./routes/carousel')
 // app
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api', braintreeRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', couponRoutes);
 app.use('/api', reviewRoutes);
+app.use('/api', carouselRoutes);
 
 const port = process.env.PORT || 8000
 
