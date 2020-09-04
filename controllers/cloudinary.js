@@ -77,3 +77,7 @@ exports.ImgUpload = (req, res, next) => {
     })
       
 }
+
+exports.removeImg = (photoId) => {
+  cloudinary.uploader.destroy(photoId, function(result) { console.log(result) })
+}

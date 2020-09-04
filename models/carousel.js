@@ -10,6 +10,10 @@ const carouselSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        link: {
+            type: String,
+            default: "https://mern-eco-frontend.herokuapp.com/"
+        },
         photoUrl: {
             type: String,
             required: true
